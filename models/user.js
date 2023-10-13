@@ -24,6 +24,10 @@ const User = sequelize.define('user', {
     type: DataTypes.FLOAT,
     defaultValue: 0.0,
   },
+  bank: {
+    type: DataTypes.BIGINT,
+    defaultValue: 1,
+  },
   dick_size: {
     type: DataTypes.FLOAT,
     defaultValue: 0.0,
