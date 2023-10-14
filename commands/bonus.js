@@ -1,5 +1,5 @@
 import bot from '../app.js';
-import { selectUser, checkUser } from '../db/quick_commands.js';
+import { selectUser, checkUser, paymentSys } from '../db/quick_commands.js';
 
 async function bonus(msg) {
     try {
@@ -21,14 +21,11 @@ async function bonus(msg) {
             } else {
 
                 let bonus;
-                if (user.status == 'premium') {
-                    bonus = Math.random() * (1000 - 200 + 1) + 200;
-                } else {
-                    bonus = Math.random() * (500 - 50 + 1) + 50;
-                }
-                const amount = parseFloat(user.balance) + parseFloat(bonus);
+                user.status == 'premium' ? bonus = Math.random() * (1000 - 200 + 1) + 200 : bonus = Math.random() * (500 - 50 + 1) + 50;
+                
+                await paymentSys(msg.from.id, parseFloat(bonus));
 
-                await user.update({ balance: parseFloat(amount).toFixed(2), last_time_bonus: new Date() });
+                await user.update({ last_time_bonus: new Date() });
                 const formattedBalance = new Intl.NumberFormat('en-US').format(user.balance);
 
                 await bot.sendMessage(msg.chat.id, 

@@ -1,5 +1,5 @@
 import bot from '../app.js';
-import { selectUser, checkUser, transferSys } from '../db/quick_commands.js';
+import { selectUser, checkUser, transferMoney } from '../db/quick_commands.js';
 
 async function give_m(msg) {
     try {
@@ -32,7 +32,7 @@ async function give_m(msg) {
                 return;
               }
 
-              await transferSys(user.user_id, toUser.user_id, value);
+              await transferMoney(user.user_id, toUser.user_id, value);
               await bot.sendMessage(msg.chat.id, value);
             }
         }

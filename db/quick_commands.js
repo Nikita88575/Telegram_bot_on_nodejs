@@ -118,7 +118,7 @@ async function dickMeter(user_id, size) {
     }
   }
   
-async function transferSys(from_user_id, to_user_id, value) {
+async function transferMoney(from_user_id, to_user_id, value) {
     const from_user = await selectUser(from_user_id);
     const to_user = await selectUser(to_user_id);
 
@@ -126,4 +126,16 @@ async function transferSys(from_user_id, to_user_id, value) {
     await from_user.update({ balance: parseFloat(from_user.balance) - value });
 }
 
-export { selectUser, addUser, updateUser, checkUser, formattedDate, dickMeter, transferSys };
+async function transferBank(user_id, value) {
+    const user = await selectUser(user_id);
+
+    await user.update({ bank: parseInt(user.bank) + value });
+}
+
+async function paymentSys(user_id, amount) {
+    const user = await selectUser(user_id);
+
+    await user.update({ balance: (parseFloat(user.balance) + parseFloat(amount)).toFixed(2) });
+}
+
+export { selectUser, addUser, updateUser, checkUser, formattedDate, dickMeter, paymentSys, transferBank, transferMoney};

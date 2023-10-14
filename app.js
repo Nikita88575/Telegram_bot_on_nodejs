@@ -10,6 +10,7 @@ import dice from './commands/dice.js';
 import referral from './commands/invite.js';
 import help from './commands/help.js';
 import give_m from './commands/give_money.js';
+import bank from './commands/bank.js';
 
 config();
 
@@ -50,6 +51,10 @@ bot.onText(/\/help/, async (msg) => {
 
 bot.onText(/\+(\d+(\.\d{1,2})?)/, async (msg) => {
   await give_m(msg);
+});
+
+bot.onText(/^\/bank(\s[+-]?\d+)?|!bank(\s[+-]?\d+)?$/i, async (msg) => {
+  await bank(msg);
 });
 
 (async () => {
