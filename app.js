@@ -15,7 +15,7 @@ import bank from './commands/bank.js';
 config();
 
 const token = process.env.botApi;
-const bot = new TelegramBot(token, { polling: true});
+const bot = new TelegramBot(token, { polling: true });
 
 bot.onText(/\/start/, async (msg) => {
   await start(msg);

@@ -25,7 +25,9 @@ async function bonus(msg) {
           await paymentSys(msg.from.id, parseFloat(bonus));
 
           await user.update({ last_time_bonus: new Date() });
-          const formattedBalance = new Intl.NumberFormat('en-US').format(user.balance);
+
+          const current = await selectUser(msg.from.id);
+          const formattedBalance = new Intl.NumberFormat('en-US').format(current.balance);
 
           await bot.sendMessage(msg.chat.id, 
           `Бонус: ${bonus.toFixed(2)}💵❗️\nВаш баланс: ${formattedBalance}💵❗️`,
