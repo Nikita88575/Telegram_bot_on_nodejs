@@ -1,6 +1,5 @@
 import bot from "../app.js";
 import { selectUser, addUser, updateUser} from '../db/quick_commands.js';
-import referral from "./invite.js";
 
 async function start(msg) {
   try {
@@ -15,6 +14,7 @@ async function start(msg) {
       } else {
         await updateUser(msg.from.id, msg.from.first_name, msg.from.last_name, msg.from.username);
       }
+      
     } else if (msg.text.startsWith('/start')) {
 
       const user = await selectUser(msg.from.id);
