@@ -28,13 +28,13 @@ async function give_m(msg) {
             await bot.sendMessage(msg.chat.id, `Не можна передавати кошти боту❗️`);
             return;
 
-          } else if (user.user_id == toUser.user_id) {
+          } else if (msg.from.id == msg.reply_to_message.from.id) {
             await bot.sendMessage(msg.chat.id, 'Не можна передавати кошти самому собі❗️');
             return;
           }
 
           await transferMoney(msg.from.id, msg.reply_to_message.from.id, value);
-          await bot.sendMessage(msg.chat.id, `Ти успішно передав ${value}💵`,
+          await bot.sendMessage(msg.chat.id, `Ти успішно передав ${value}💵 ${toUser.first_name}`,
           {reply_to_message_id: msg.message_id});
         }
       }
