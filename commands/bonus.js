@@ -4,7 +4,7 @@ import { selectUser, checkUser, paymentSys } from '../db/quick_commands.js';
 async function bonus(msg) {
     try {
       const thisBot = await bot.getMe();
-      if (msg.text == '/bonus' || `/bonus@${thisBot.username}`) {
+      if (msg.text == '/bonus' || msg.text == `/bonus@${thisBot.username}`) {
         await checkUser(msg, new Date());
         
         const user = await selectUser(msg.from.id);
@@ -20,7 +20,7 @@ async function bonus(msg) {
         } else {
 
           let bonus;
-          user.status == 'premium' ? bonus = Math.random() * (1000 - 200 + 1) + 200 : bonus = Math.random() * (500 - 50 + 1) + 50;
+          await user.status == 'premium' ? bonus = Math.random() * (1000 - 200 + 1) + 200 : bonus = Math.random() * (500 - 50 + 1) + 50;
               
           await paymentSys(msg.from.id, parseFloat(bonus));
 

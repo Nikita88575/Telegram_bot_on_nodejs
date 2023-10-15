@@ -4,7 +4,7 @@ import { selectUser, checkUser, dickMeter } from '../db/quick_commands.js';
 async function dick(msg) {
     try {
       const thisBot = await bot.getMe();
-      if (msg.text == '/dick' || `/dick@${thisBot.username}`) {
+      if (msg.text == '/dick' || msg.text == `/dick@${thisBot.username}`) {
         await checkUser(msg, new Date());
         const user = await selectUser(msg.from.id);
     

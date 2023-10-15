@@ -4,7 +4,7 @@ import { selectUser, addUser, updateUser} from '../db/quick_commands.js';
 async function start(msg) {
   try {
     const thisBot = await bot.getMe();
-    if (msg.text == '/start' || `/start@${thisBot.username}`) {
+    if (msg.text == '/start' || msg.text == `/start@${thisBot.username}`) {
 
       const user = await selectUser(msg.from.id);
   

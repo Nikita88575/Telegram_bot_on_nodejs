@@ -4,7 +4,7 @@ import { checkUser, countRefs } from '../db/quick_commands.js';
 async function referral(msg) {
     try {
       const thisBot = await bot.getMe();
-      if (msg.text == '/referral' || `/referral@${thisBot.username}`) {
+      if (msg.text == '/referral' || msg.text == `/referral@${thisBot.username}`) {
         await checkUser(msg, new Date());
         const count = await countRefs(msg.from.id);
 

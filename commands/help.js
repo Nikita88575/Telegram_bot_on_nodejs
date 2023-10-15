@@ -4,7 +4,7 @@ import { checkUser } from '../db/quick_commands.js';
 async function help(msg) {
     try {
       const thisBot = await bot.getMe();
-      if (msg.text == '/help' || `/help@${thisBot.username}`) {
+      if (msg.text == '/help' || msg.text == `/help@${thisBot.username}`) {
         await checkUser(msg, new Date());
 
         await bot.sendMessage(msg.chat.id,

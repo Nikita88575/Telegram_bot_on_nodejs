@@ -4,7 +4,7 @@ import { selectUser, checkUser, formattedDate, countRefs } from '../db/quick_com
 async function info(msg) {
     try {
       const thisBot = await bot.getMe();
-      if (msg.text == '/info' || `/info@${thisBot.username}`) {
+      if (msg.text == '/info' || msg.text == `/info@${thisBot.username}`) {
         if (msg.reply_to_message) {
 
           await checkUser(msg, new Date());
