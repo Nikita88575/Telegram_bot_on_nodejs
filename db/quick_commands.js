@@ -19,9 +19,9 @@ async function addUser(user_id, first_name, last_name, username, last_call, ref_
             username: username || '',
             status: 'active',
             balance: 0.00,
+            bank: 1,
             dick_size: 0.00,
             referral_id: ref_id,
-            count_refs: 0,
             last_time_bonus: last_call.setUTCFullYear(2022),
             last_time_dick: last_call.setUTCFullYear(2022),
         });
@@ -138,4 +138,13 @@ async function paymentSys(user_id, amount) {
     await user.update({ balance: (parseFloat(user.balance) + parseFloat(amount)).toFixed(2) });
 }
 
-export { selectUser, addUser, updateUser, checkUser, formattedDate, dickMeter, paymentSys, transferBank, transferMoney};
+async function countRefs(user_id) {
+    try {
+        const count_referrals = await User.findAll({ where: { referral_id : user_id} });
+        return count_referrals.length;
+    } catch (error) {
+        console.log(`[${Date()}] ${error}`);
+    }
+}
+
+export { selectUser, addUser, updateUser, checkUser, formattedDate, dickMeter, paymentSys, transferBank, transferMoney, countRefs };
