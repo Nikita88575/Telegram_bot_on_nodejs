@@ -3,7 +3,7 @@ import { selectUser, checkUser, transferBank, paymentSys } from '../db/quick_com
 
 async function bank(msg) {
     try {
-        const thisBot = bot.getMe();
+        const thisBot = await bot.getMe();
         if (msg.text == '/bank' || msg.text == '!bank' || 
             msg.text == `/bank@${thisBot.username}` || 
             msg.text == `!bank@${thisBot.username}`) {

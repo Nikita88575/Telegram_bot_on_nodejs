@@ -3,7 +3,7 @@ import { selectUser, addUser, updateUser} from '../db/quick_commands.js';
 
 async function start(msg) {
   try {
-    const thisBot = bot.getMe();
+    const thisBot = await bot.getMe();
     if (msg.text == '/start' || `/start@${thisBot.username}`) {
 
       const user = await selectUser(msg.from.id);
@@ -31,8 +31,8 @@ async function start(msg) {
             `Я тебе запам\`ятав❗️\nТримай бонус за приєднання за запрошенням ${referralUser.first_name}❗️\nБонус: 5000💵❗️`);
           
           let bonus;
-          referralUser.status == 'premium' ? bonus = 8000 : bonus = 5000;
-          await referralUser.update({balance: parseFloat(referralUser.balance) + bonus, count_refs: parseInt(referralUser.count_refs) + 1});
+          await referralUser.status == 'premium' ? bonus = 8000 : bonus = 5000;
+          await referralUser.update({balance: parseFloat(referralUser.balance) + bonus});
           await bot.sendMessage(referralUserId, `За твоїм запрошенням приєднався(лась) ${user.first_name}❗️\nБонус: ${bonus}💵❗️`);
 
         } else {

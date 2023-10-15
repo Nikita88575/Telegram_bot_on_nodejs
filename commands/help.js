@@ -3,7 +3,7 @@ import { checkUser } from '../db/quick_commands.js';
 
 async function help(msg) {
     try {
-      const thisBot = bot.getMe();
+      const thisBot = await bot.getMe();
       if (msg.text == '/help' || `/help@${thisBot.username}`) {
         await checkUser(msg, new Date());
 

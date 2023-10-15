@@ -1,17 +1,17 @@
 import bot from '../app.js';
-import { selectUser, checkUser } from '../db/quick_commands.js';
+import { checkUser, countRefs } from '../db/quick_commands.js';
 
 async function referral(msg) {
     try {
-      const thisBot = bot.getMe();
+      const thisBot = await bot.getMe();
       if (msg.text == '/referral' || `/referral@${thisBot.username}`) {
         await checkUser(msg, new Date());
-        const user = await selectUser(msg.from.id);
-                
+        const count = await countRefs(msg.from.id);
+
         const referralLink = `https://t.me/${thisBot.username}?start=${msg.from.id}`;
 
         await bot.sendMessage(msg.chat.id,
-        `Кількість запрошенних користувачів: ${user.count_refs}\n` + 
+        `Кількість запрошенних користувачів: ${count}\n` + 
         `Ваше посилання для запрошення: ${referralLink}`, 
         {reply_to_message_id: msg.message_id});
       }

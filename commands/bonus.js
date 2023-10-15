@@ -3,7 +3,7 @@ import { selectUser, checkUser, paymentSys } from '../db/quick_commands.js';
 
 async function bonus(msg) {
     try {
-      const thisBot = bot.getMe();
+      const thisBot = await bot.getMe();
       if (msg.text == '/bonus' || `/bonus@${thisBot.username}`) {
         await checkUser(msg, new Date());
         

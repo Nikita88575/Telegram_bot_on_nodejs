@@ -36,7 +36,7 @@ async function dice(msg) {
           if (parseInt(diceValue) == chosenNumber) {
 
             let x;
-            user.status == 'premium' ? x = 2.8 : x = 2.3;
+            await user.status == 'premium' ? x = 2.8 : x = 2.3;
                 
             const amount = parseFloat(user.balance) + parseFloat(bet * x);
             await user.update({balance: amount.toFixed(2)});

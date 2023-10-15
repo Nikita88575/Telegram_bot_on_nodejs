@@ -3,7 +3,7 @@ import { selectUser, checkUser } from '../db/quick_commands.js';
 
 async function balance(msg) {
     try {
-      const thisBot = bot.getMe();
+      const thisBot = await bot.getMe();
       if (msg.text == '/balance' || `/balance@${thisBot.username}`) {
         
         await checkUser(msg, new Date());
