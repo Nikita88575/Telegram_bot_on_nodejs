@@ -36,10 +36,6 @@ const User = sequelize.define('user', {
     type: DataTypes.BIGINT,
     defaultValue: null,
   },
-  count_refs: {
-    type: DataTypes.BIGINT,
-    defaultValue: null,
-  },
   last_time_bonus: {
     type: DataTypes.DATE,
   },
