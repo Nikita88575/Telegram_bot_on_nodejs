@@ -7,12 +7,10 @@ async function give_m(msg) {
         await checkUser(msg, new Date());
             
         if (msg.reply_to_message) {
-          const user = await selectUser(msg.from.id);
           const toUser = await selectUser(msg.reply_to_message.from.id);
-          const thisBotID = bot.getMe().id;
-          const thisBot = await  selectUser(thisBotID);
-                  
-          const value =  parseFloat(msg.text.split('+')[1]);
+          const user = await selectUser(msg.from.id);
+          
+          const value = parseFloat(msg.text.split('+')[1]);
   
           if (isNaN(value) || value <= 0) {
             await bot.sendMessage(msg.chat.id, 'Не вірний формат передачі❗️\nВикористовуйте: +[сума]');
@@ -27,8 +25,7 @@ async function give_m(msg) {
             return;
 
           } else if (msg.reply_to_message.from.is_bot) {
-            const formattedBalance = new Intl.NumberFormat('en-US').format(thisBot.balance);
-            await bot.sendMessage(msg.chat.id, `Мені не треба❗️\nУ мене є ${formattedBalance}💵❗️`);
+            await bot.sendMessage(msg.chat.id, `Не можна передавати кошти боту❗️`);
             return;
 
           } else if (user.user_id == toUser.user_id) {
@@ -36,8 +33,9 @@ async function give_m(msg) {
             return;
           }
 
-          await transferMoney(user.user_id, toUser.user_id, value);
-          await bot.sendMessage(msg.chat.id, value);
+          await transferMoney(msg.from.id, msg.reply_to_message.from.id, value);
+          await bot.sendMessage(msg.chat.id, `Ти успішно передав ${value}💵`,
+          {reply_to_message_id: msg.message_id});
         }
       }
     } catch (error) {
