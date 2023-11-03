@@ -11,6 +11,13 @@ import referral from './commands/invite.js';
 import help from './commands/help.js';
 import give_m from './commands/give_money.js';
 import bank from './commands/bank.js';
+import { create_team, team_query } from './commands/create_team.js';
+import { join_team_query, accept_invite, decline_invite } from './commands/join_team.js';
+import invite_to_team from './commands/invite_to_team.js';
+import { team, leave_team, delete_team,
+         transfer_rights, close_team_menu } from './commands/team.js';
+import isPrivateChat from './filters/is_private.js';
+import isGroup from './filters/Is_group.js';
 
 config();
 
@@ -18,11 +25,11 @@ const token = process.env.botApi;
 const bot = new TelegramBot(token, { polling: true });
 
 bot.onText(/\/start/, async (msg) => {
-  await start(msg);
+  await isPrivateChat(msg) ? await start(msg) : null;
 });
 
 bot.onText(/\/info/, async (msg) => {
-    await info(msg);
+  await info(msg);
 });
 
 bot.onText(/\/bonus/, async (msg) => {
@@ -42,19 +49,62 @@ bot.onText(/\/dice/, async (msg) => {
 });
 
 bot.onText(/\/referral/, async (msg) => {
-  await referral(msg);
+  await isPrivateChat(msg) ? await referral(msg) : null;
 });
 
 bot.onText(/\/help/, async (msg) => {
-  await help(msg);
+  await isPrivateChat(msg) ? await help(msg) : null;
 });
 
 bot.onText(/\+(\d+(\.\d{1,2})?)/, async (msg) => {
-  await give_m(msg);
+  await isGroup(msg) ? await give_m(msg) : null;
 });
 
 bot.onText(/^\/bank(\s[+-]?\d+)?|!bank(\s[+-]?\d+)?$/i, async (msg) => {
   await bank(msg);
+});
+
+bot.onText(/\/createteam/, async (msg) => {
+  await isGroup(msg) ? await create_team(msg) : null;
+});
+
+bot.on('callback_query', async (query) => {
+  const data = query.data;
+
+  if (data.startsWith('create_team') ||
+      data.startsWith('cancel_team')) {
+
+    await team_query(query);
+
+  } else if (data.startsWith('join_team')) {
+    await join_team_query(query);
+
+  } else if (data.startsWith('accept_invite')) {
+    await accept_invite(query);
+
+  } else if (data.startsWith('decline_invite')) {
+    await decline_invite(query);
+
+  } else if (data.startsWith('leave_team')) {
+    await leave_team(query);
+
+  } else if (data.startsWith('delete_team')) {
+    await delete_team(query);
+
+  } else if (data.startsWith('transfer_rights')) {
+    await transfer_rights(query);
+
+  } else if (data.startsWith('close_team_menu')) {
+    await close_team_menu(query);
+  }
+});
+
+bot.onText(/\/invite/, async (msg) => {
+  await isGroup(msg) ? await invite_to_team(msg) : null;
+});
+
+bot.onText(/\/team/, async (msg) => {
+  await team(msg);
 });
 
 (async () => {
