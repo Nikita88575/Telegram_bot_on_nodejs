@@ -1,5 +1,6 @@
 import bot from '../app.js';
-import { selectUser, checkUser, transferBank, paymentSys } from '../db/quick_commands.js';
+import { selectUser, checkUser } from '../db/quick_commands.js';
+import { selectItem } from '../db/item_commands.js';
 
 async function bank(msg) {
     try {
@@ -10,13 +11,15 @@ async function bank(msg) {
         
             await checkUser(msg, new Date());
             const user = await selectUser(msg.from.id);
+            const item = await selectItem(2);
             
-            const bank_balance = parseInt(user.bank) * 50000;
+            const bank_balance = parseInt(user.bank) * parseInt(item.price);
             const value = new Intl.NumberFormat('en-US').format(bank_balance);
+            const price = new Intl.NumberFormat('en-US').format(item.price);
 
             await bot.sendMessage(msg.chat.id,
                 'У банку можна обміняти гроші на облігації, і навпаки.\n' + 
-                'Ціна однієї облігації: 50 000💵.\n\n' +
+                `Ціна однієї облігації: ${price}💵.\n\n` +
                 `У Вас ${user.bank} облінгції на суму ${value} 💵.\n` +
                 'Купівля: /bank +1 або <code>!bank +1</code>\n' + 
                 'Продаж: /bank -1 або <code>!bank -1</code>', 
@@ -27,20 +30,20 @@ async function bank(msg) {
             const user = await selectUser(msg.from.id);
             const value = msg.text.split(' ')[1];
             const amount = parseInt(value.match(/\d+/));
+            const item = await selectItem(2);
 
             if (value.startsWith('+')) {
-                const total = amount * 50000;
+                const total = amount * parseInt(item.price);
 
                 if (parseInt(user.balance) >= total) {
 
-                    await transferBank(msg.from.id, amount);
-                    await paymentSys(msg.from.id, parseInt(-total));
+                    await user.update({ bank: parseInt(user.bank) + amount });
+                    await user.update({ balance: (parseFloat(user.balance) + parseFloat(-total)).toFixed(2) });
                     
-                    const obl = await selectUser(msg.from.id);
-                    const formattedBank = new Intl.NumberFormat('en-US').format(parseInt(obl.bank) * 50000);
+                    const formattedBank = new Intl.NumberFormat('en-US').format(parseInt(obl.bank) * parseInt(item.price));
                     
                     await bot.sendMessage(msg.chat.id,
-                        `Ти успішно купив ${amount} облігацій ❗️\nУ тебе ${obl.bank} облігації на суму ${formattedBank}💵❗️`,
+                        `Ти успішно купив ${amount} облігацій ❗️\nУ тебе ${user.bank} облігації на суму ${formattedBank}💵❗️`,
                         {reply_to_message_id: msg.message_id});
 
                 } else {
@@ -53,17 +56,16 @@ async function bank(msg) {
 
             } else if (value.startsWith('-')) {
 
-                const total = amount * 50000;
+                const total = amount * parseInt(item.price);;
                 if (parseInt(user.bank) >= amount) {
 
-                    await transferBank(msg.from.id, -amount);
-                    await paymentSys(msg.from.id, total);
+                    await user.update({ bank: parseInt(user.bank) - amount });
+                    await user.update({ balance: (parseFloat(user.balance) + parseFloat(total)).toFixed(2) });
 
-                    const obl = await selectUser(msg.from.id);
-                    const formattedBank = new Intl.NumberFormat('en-US').format(parseInt(obl.bank) * 50000);
+                    const formattedBank = new Intl.NumberFormat('en-US').format(parseInt(user.bank) * parseInt(item.price));
                     
                     await bot.sendMessage(msg.chat.id,
-                        `Ти успішно продав ${amount} облігацій ❗️\nУ тебе ${obl.bank} облігації на суму ${formattedBank}💵❗️`,
+                        `Ти успішно продав ${amount} облігацій ❗️\nУ тебе ${user.bank} облігації на суму ${formattedBank}💵❗️`,
                         {reply_to_message_id: msg.message_id});
 
                 } else {

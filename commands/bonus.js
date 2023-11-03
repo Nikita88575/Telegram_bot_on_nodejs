@@ -1,5 +1,5 @@
 import bot from '../app.js';
-import { selectUser, checkUser, paymentSys } from '../db/quick_commands.js';
+import { selectUser, checkUser } from '../db/quick_commands.js';
 
 async function bonus(msg) {
     try {
@@ -9,11 +9,11 @@ async function bonus(msg) {
         
         const user = await selectUser(msg.from.id);
         
-        const today = new Date();
-        today.setUTCHours(today.getHours() + 3);
-
         const kyivTime = new Date(user.last_time_bonus);
         kyivTime.setHours(kyivTime.getHours() + 3);
+
+        const today = new Date();
+        today.setUTCHours(today.getHours());
         
         if (kyivTime >= today) {
           await bot.sendMessage(msg.chat.id, `Ти вже отримав(ла) бонус сьогодні❗️`);
@@ -22,12 +22,10 @@ async function bonus(msg) {
           let bonus;
           await user.status == 'premium' ? bonus = Math.random() * (1000 - 200 + 1) + 200 : bonus = Math.random() * (500 - 50 + 1) + 50;
               
-          await paymentSys(msg.from.id, parseFloat(bonus));
+          await user.update({ balance: (parseFloat(user.balance) + parseFloat(bonus)).toFixed(2), 
+                              last_time_bonus: today });
 
-          await user.update({ last_time_bonus: new Date() });
-
-          const current = await selectUser(msg.from.id);
-          const formattedBalance = new Intl.NumberFormat('en-US').format(current.balance);
+          const formattedBalance = new Intl.NumberFormat('en-US').format(user.balance);
 
           await bot.sendMessage(msg.chat.id, 
           `Бонус: ${bonus.toFixed(2)}💵❗️\nВаш баланс: ${formattedBalance}💵❗️`,

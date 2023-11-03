@@ -14,7 +14,7 @@ async function info(msg) {
           const date = await formattedDate(user.user_id);
           const formattedBalance = new Intl.NumberFormat('en-US').format(user.balance);
           const formattedDick = new Intl.NumberFormat('en-US').format(user.dick_size);
-          const count_refs = await countRefs(msg.from.id);
+          const count_refs = await countRefs(msg.reply_to_message.from.id);
       
           if (user.status == 'premium' && from_user.status != 'premium') {
             await bot.sendMessage(msg.chat.id,
