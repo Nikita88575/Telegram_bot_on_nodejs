@@ -19,8 +19,7 @@ async function bonus(msg) {
           await bot.sendMessage(msg.chat.id, `Ти вже отримав(ла) бонус сьогодні❗️`);
         } else {
 
-          let bonus;
-          await user.status == 'premium' ? bonus = Math.random() * (1000 - 200 + 1) + 200 : bonus = Math.random() * (500 - 50 + 1) + 50;
+          const bonus = await user.status == 'premium' ? Math.random() * (1000 - 200 + 1) + 200 : Math.random() * (500 - 50 + 1) + 50;
               
           await user.update({ balance: (parseFloat(user.balance) + parseFloat(bonus)).toFixed(2), 
                               last_time_bonus: today });

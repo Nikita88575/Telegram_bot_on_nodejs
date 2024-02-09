@@ -42,6 +42,8 @@ async function create_team(msg) {
   }
 }
 
+const userStates = {};
+
 async function team_query(query) {
     try {
       const data = await query.data;
@@ -55,12 +57,12 @@ async function team_query(query) {
   
       } else {
   
-        const handleTestResponse = async (message) => {
+        const handlerResponse = async (message) => {
           if (message.text.length >= 3) {
   
             if (message.from.id == user_id) {
               const team_id = await lastTeamID() + 1;
-              await joinTeam(message.from.id, message.from.first_name, 'owner',
+              await joinTeam(message.from.id, message.from.first_name, 'Owner',
                             team_id, message.text, message.chat.id);
               
               await user.update({ balance: parseFloat(user.balance) - parseInt(item.price) })
@@ -70,8 +72,11 @@ async function team_query(query) {
               { reply_to_message_id: message.message_id });
     
               await bot.deleteMessage(query.message.chat.id, query.message.message_id);
-              bot.removeListener('message', handleTestResponse);
+              bot.removeListener('message', handlerResponse);
+
+              delete userStates[user_id];
             }
+            
           } else {
             await bot.sendMessage(message.chat.id,
             'Назва команды повинна мати як мінімум 3 літери❗️',
@@ -84,11 +89,21 @@ async function team_query(query) {
           await bot.sendMessage(query.message.chat.id,
           'Введіть назву команди', 
           { reply_to_message_id: query.message_idmessage_id });
-          bot.on('message', handleTestResponse);
+          
+          userStates[user_id] = {
+            state: 'waiting_message',
+            handler: handlerResponse,
+          };
+          
+          bot.on('message', handlerResponse);
   
         } else if (data.startsWith('cancel_team')) {
-          bot.removeAllListeners('message', handleTestResponse);
-          await bot.deleteMessage(query.message.chat.id, query.message.message_id);
+
+          if (userStates[user_id] && userStates[user_id].state === 'waiting_message') {
+            bot.removeListener('message', userStates[user_id].handler);
+            delete userStates[user_id];
+          }
+          return;
         }
       }
     } catch (error) {

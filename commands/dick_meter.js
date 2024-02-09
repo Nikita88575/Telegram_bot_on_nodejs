@@ -17,9 +17,10 @@ async function dick(msg) {
         if (kyivTime >= today) {
           await bot.sendMessage(msg.chat.id, `Ти вже грав(ла) сьогодні❗️`);
         } else {
-              
-          let size;
-          user.status == 'premium' ? size = Math.random() * (-5 - 15 + 1) + 15 : size = Math.random() * (-10 - 10 + 1) + 10;
+          
+          const size = await user.status == 'premium' ? 
+          Math.random() * (-7 - 15 + 1) + 15 : 
+          Math.random() * (-10 - 10 + 1) + 10;
           await dickMeter(msg.from.id, size);
           const new_size = await selectUser(msg.from.id);
 

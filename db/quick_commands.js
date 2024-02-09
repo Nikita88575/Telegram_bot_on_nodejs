@@ -35,12 +35,9 @@ async function updateUser(user_id, first_name, last_name, username) {
         const user = await selectUser(user_id);
 
         if (user) {
-            await user.first_name == first_name;
-            await user.last_name == last_name || '';
-            await user.username == username || '';
-
-            await user.save();
-            return user;
+            await user.update({ first_name: first_name || '',
+                                last_name: last_name || '',
+                                username: username || ''});
         } else {
             throw new Error('User not found.');
         }
@@ -90,18 +87,17 @@ async function checkUser(msg, last_call) {
     }
 }
 
-async function formattedDate(user_id) {
+async function formattedDate(date) {
     try {
-        const user = await selectUser(user_id);
 
-        const date = String(user.createdAt.getDate()).padStart(2, '0');;
-        const month = String(user.createdAt.getMonth() + 1).padStart(2, '0');;
-        const year = user.createdAt.getFullYear();
-        const hours = String(user.createdAt.getHours()).padStart(2, '0');;
-        const seconds = String(user.createdAt.getSeconds()).padStart(2, '0');;
-        const minutes = String(user.createdAt.getMinutes()).padStart(2, '0');;
+        const day = String(date.getDate()).padStart(2, '0');;
+        const month = String(date.getMonth() + 1).padStart(2, '0');;
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, '0');;
+        const seconds = String(date.getSeconds()).padStart(2, '0');;
+        const minutes = String(date.getMinutes()).padStart(2, '0');;
 
-        const str_date = `${date}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+        const str_date = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
         return str_date;
     } catch (error) {
         console.log(`[${Date()}] ${error}`);

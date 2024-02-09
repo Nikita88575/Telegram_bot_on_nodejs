@@ -18,7 +18,7 @@ async function invite_to_team(msg) {
           { reply_to_message_id: msg.message_id });
 
         } else {
-          if (user.role == 'owner') {
+          if (user.role == 'Owner') {
 
             if (invited_user) {
               await bot.sendMessage(msg.chat.id, 'Цей користувач уже в команді❗️',
@@ -36,15 +36,12 @@ async function invite_to_team(msg) {
               };
               
               const teammates_count = await countTeammates(user.team_id);
-              const message = await bot.sendMessage(msg.chat.id,
+              
+              await bot.sendMessage(msg.chat.id,
               `Користувач ${user.first_name} запросив(ла) тебе до своєї команди ` + 
               `<b>${user.team_name}</b>❗️\nУчасників в команді: ${teammates_count}👥❗️`,
               { reply_to_message_id: msg.reply_to_message.message_id,
                 reply_markup: options, parse_mode: 'HTML' });
-
-              setTimeout(async () => {
-                await bot.deleteMessage(msg.chat.id, message.message_id);
-              }, 60000 );
             }
           } else {
             await bot.sendMessage(msg.chat.id, 'Тільки власник команди може запрошувати людей❗️',

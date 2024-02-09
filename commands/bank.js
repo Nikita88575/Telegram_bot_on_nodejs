@@ -20,9 +20,9 @@ async function bank(msg) {
             await bot.sendMessage(msg.chat.id,
                 'У банку можна обміняти гроші на облігації, і навпаки.\n' + 
                 `Ціна однієї облігації: ${price}💵.\n\n` +
-                `У Вас ${user.bank} облінгції на суму ${value} 💵.\n` +
-                'Купівля: /bank +1 або <code>!bank +1</code>\n' + 
-                'Продаж: /bank -1 або <code>!bank -1</code>', 
+                `У тебе ${user.bank} облінгції на суму ${value} 💵.\n` +
+                'Купівля: <code>/bank +1</code> або <code>!bank +1</code>\n' + 
+                'Продаж: <code>/bank -1</code> або <code>!bank -1</code>', 
                 {reply_to_message_id: msg.message_id, parse_mode: 'HTML'});
         
         } else if (msg.text.startsWith('/bank') || msg.text.startsWith('!bank')) {
@@ -40,7 +40,7 @@ async function bank(msg) {
                     await user.update({ bank: parseInt(user.bank) + amount });
                     await user.update({ balance: (parseFloat(user.balance) + parseFloat(-total)).toFixed(2) });
                     
-                    const formattedBank = new Intl.NumberFormat('en-US').format(parseInt(obl.bank) * parseInt(item.price));
+                    const formattedBank = new Intl.NumberFormat('en-US').format(parseInt(user.bank) * parseInt(item.price));
                     
                     await bot.sendMessage(msg.chat.id,
                         `Ти успішно купив ${amount} облігацій ❗️\nУ тебе ${user.bank} облігації на суму ${formattedBank}💵❗️`,

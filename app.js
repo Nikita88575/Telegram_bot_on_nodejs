@@ -15,7 +15,8 @@ import { create_team, team_query } from './commands/create_team.js';
 import { join_team_query, accept_invite, decline_invite } from './commands/join_team.js';
 import invite_to_team from './commands/invite_to_team.js';
 import { team, leave_team, delete_team,
-         transfer_rights, close_team_menu } from './commands/team.js';
+         transfer_rights, close_team_menu,
+         black_list, add_to_blacklist, rm_from_blacklist } from './commands/team.js';
 import isPrivateChat from './filters/is_private.js';
 import isGroup from './filters/Is_group.js';
 
@@ -73,7 +74,6 @@ bot.on('callback_query', async (query) => {
 
   if (data.startsWith('create_team') ||
       data.startsWith('cancel_team')) {
-
     await team_query(query);
 
   } else if (data.startsWith('join_team')) {
@@ -91,12 +91,22 @@ bot.on('callback_query', async (query) => {
   } else if (data.startsWith('delete_team')) {
     await delete_team(query);
 
-  } else if (data.startsWith('transfer_rights')) {
+  } else if (data.startsWith('transfer_rights') ||
+             data.startsWith('close_menu')) {
     await transfer_rights(query);
 
-  } else if (data.startsWith('close_team_menu')) {
-    await close_team_menu(query);
+  } else if (data.startsWith('blacklist')) {
+    await black_list(query);
+
+  } else if (data.startsWith('add_to_blacklist')  ||
+             data.startsWith('close_blacklist_menu')) {
+    await add_to_blacklist(query);
+  
+  } else if (data.startsWith('rm_from_blacklist')  ||
+             data.startsWith('close_blacklist_menu')) {
+    await rm_from_blacklist(query);
   }
+  
 });
 
 bot.onText(/\/invite/, async (msg) => {

@@ -13,24 +13,19 @@ async function give_m(msg) {
           const value = parseFloat(msg.text.split('+')[1]);
   
           if (isNaN(value) || value <= 0) {
-            await bot.sendMessage(msg.chat.id, 'Не вірний формат передачі❗️\nВикористовуйте: +[сума]');
-            return;
+            return await bot.sendMessage(msg.chat.id, 'Не вірний формат передачі❗️\nВикористовуйте: +[сума]');
 
           } else if (!toUser) {
-            await bot.sendMessage(msg.chat.id, 'Я не знаю цього користувача❗️');
-            return;
+            return await bot.sendMessage(msg.chat.id, 'Я не знаю цього користувача❗️');
 
           } else if (parseFloat(user.balance) < value) {
-            await bot.sendMessage(msg.chat.id, 'У вас недостатньо коштів❗️');
-            return;
+            return await bot.sendMessage(msg.chat.id, 'У вас недостатньо коштів❗️');
 
           } else if (msg.reply_to_message.from.is_bot) {
-            await bot.sendMessage(msg.chat.id, `Не можна передавати кошти боту❗️`);
-            return;
+            return await bot.sendMessage(msg.chat.id, `Не можна передавати кошти боту❗️`);
 
           } else if (msg.from.id == msg.reply_to_message.from.id) {
-            await bot.sendMessage(msg.chat.id, 'Не можна передавати кошти самому собі❗️');
-            return;
+            return await bot.sendMessage(msg.chat.id, 'Не можна передавати кошти самому собі❗️');
           }
 
           await transferMoney(msg.from.id, msg.reply_to_message.from.id, value);
