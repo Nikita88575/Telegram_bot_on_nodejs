@@ -30,8 +30,7 @@ async function start(msg) {
           await bot.sendMessage(msg.chat.id, 
             `Я тебе запам\`ятав❗️\nТримай бонус за приєднання за запрошенням ${referralUser.first_name}❗️\nБонус: 5000💵❗️`);
           
-          let bonus;
-          await referralUser.status == 'premium' ? bonus = 8000 : bonus = 5000;
+          const bonus = await referralUser.status == 'premium' ? 8000 : 5000;
           await referralUser.update({balance: parseFloat(referralUser.balance) + bonus});
           await bot.sendMessage(referralUserId, `За твоїм запрошенням приєднався(лась) ${user.first_name}❗️\nБонус: ${bonus}💵❗️`);
 
