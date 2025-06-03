@@ -17,13 +17,7 @@ async function bonus(msg) {
     if (msg.text == '/bonus' || msg.text == `/bonus@${thisBot.username}`) {
       await checkUser(msg, new Date());
 
-      if (Now < KyivTime) {
-        await bot.sendMessage(
-          msg.chat.id,
-          `Ти вже отримав(ла) бонус сьогодні❗️\n` +
-            `Cпробуй ще раз черз: ${formatRemainingTime(KyivTime, Now)}`
-        );
-      } else {
+      if (Now > KyivTime) {
         const bonus =
           user.status == 'premium'
             ? Math.random() * (1000 - 200 + 1) + 200
@@ -43,6 +37,12 @@ async function bonus(msg) {
           `Бонус: ${bonus.toFixed(2)}💵❗️\nВаш баланс: ${formattedBalance}💵❗️\n` +
             `Cпробуй ще раз черз: 3 год. 00 хв. 00 сек.`,
           { reply_to_message_id: msg.message_id }
+        );
+      } else {
+        await bot.sendMessage(
+          msg.chat.id,
+          `Ти вже отримав(ла) бонус сьогодні❗️\n` +
+            `Cпробуй ще раз черз: ${formatRemainingTime(KyivTime, Now)}`
         );
       }
     }

@@ -26,13 +26,7 @@ async function dick(msg) {
       const Now = new Date();
       Now.setHours(Now.getHours() + 3);
 
-      if (KyivTime > today) {
-        await bot.sendMessage(
-          msg.chat.id,
-          `Ти вже грав(ла) сьогодні❗️\n` +
-            `Cпробуй ще раз черз: ${formatRemainingTime(tomorrow, Now)}`
-        );
-      } else {
+      if (KyivTime < today) {
         const size =
           (await user.status) == 'premium'
             ? Math.random() * (-7 - 15 + 1) + 15
@@ -65,6 +59,12 @@ async function dick(msg) {
             { reply_to_message_id: msg.message_id }
           );
         }
+      } else {
+        await bot.sendMessage(
+          msg.chat.id,
+          `Ти вже грав(ла) сьогодні❗️\n` +
+            `Cпробуй ще раз черз: ${formatRemainingTime(tomorrow, Now)}`
+        );
       }
     }
   } catch (error) {
