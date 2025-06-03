@@ -121,17 +121,17 @@ async function formattedDate(date) {
   }
 }
 
-function formatRemainingTime(currentTime, targetTime) {
+function formatRemainingTime(targetTime, currentTime) {
   const nextAvailableBonus = targetTime;
   nextAvailableBonus.setHours(nextAvailableBonus.getHours());
   const diffMs = nextAvailableBonus - currentTime;
   if (diffMs <= 0) return '00 сек.';
 
   const date = new Date(diffMs);
-  const days = date.getUTCDate() - 1;
-  const hours = date.getUTCHours();
-  const minutes = date.getUTCMinutes();
-  const seconds = date.getUTCSeconds();
+  const days = String(date.getUTCDate() - 1).padStart(2, '0');
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(date.getUTCSeconds()).padStart(2, '0');
 
   return days > 0
     ? `${days} дн. ${hours} год. ${minutes} хв. ${seconds} сек.`

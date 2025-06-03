@@ -8,19 +8,20 @@ import {
 async function bonus(msg) {
   try {
     const thisBot = await bot.getMe();
+    const user = await selectUser(msg.from.id);
+
+    const KyivTime = new Date(user.last_time_bonus);
+    KyivTime.setHours(KyivTime.getHours() + 3);
+    const Now = new Date();
+
     if (msg.text == '/bonus' || msg.text == `/bonus@${thisBot.username}`) {
       await checkUser(msg, new Date());
-
-      const user = await selectUser(msg.from.id);
-
-      const KyivTime = new Date(user.last_time_bonus);
-      KyivTime.setHours(KyivTime.getHours() + 3); 
-      const Now = new Date();
 
       if (Now < KyivTime) {
         await bot.sendMessage(
           msg.chat.id,
-          `Ти вже отримав(ла) бонус сьогодні❗️ ${formatRemainingTime(Now, KyivTime)}`
+          `Ти вже отримав(ла) бонус сьогодні❗️\n` +
+            `Cпробуй ще раз черз: ${formatRemainingTime(KyivTime, Now)}`
         );
       } else {
         const bonus =
@@ -39,7 +40,8 @@ async function bonus(msg) {
 
         await bot.sendMessage(
           msg.chat.id,
-          `Бонус: ${bonus.toFixed(2)}💵❗️\nВаш баланс: ${formattedBalance}💵❗️`,
+          `Бонус: ${bonus.toFixed(2)}💵❗️\nВаш баланс: ${formattedBalance}💵❗️\n` +
+            `Cпробуй ще раз черз: 3 год. 00 хв. 00 сек.`,
           { reply_to_message_id: msg.message_id }
         );
       }

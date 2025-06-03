@@ -9,7 +9,7 @@ async function help(msg) {
 
       await bot.sendMessage(
         msg.chat.id,
-          '<b>Команди бота:</b>\n\n<code>/info</code> - Інформація про користувача.\n' +
+        '<b>Команди бота:</b>\n\n<code>/info</code> - Інформація про користувача.\n' +
           '<code>/balance</code> - Перевірка балаесу.\n<code>/bonus</code> - Отримати бонус.\n' +
           '<code>/dick</code> - Гра "Пеюсн".\n' +
           '<code>/referral</code> - Отримати запрошувальне посилання.\n' +

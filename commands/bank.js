@@ -6,6 +6,10 @@ async function bank(msg) {
   try {
     const item = await selectItem(2);
 
+    const user = await selectUser(msg.from.id);
+    const bank_balance = parseInt(user.bank) * parseInt(item.price);
+    const price = new Intl.NumberFormat('en-US').format(item.price);
+
     const thisBot = await bot.getMe();
     if (
       msg.text == '/bank' ||
@@ -14,11 +18,7 @@ async function bank(msg) {
       msg.text == `!bank@${thisBot.username}`
     ) {
       await checkUser(msg, new Date());
-      const user = await selectUser(msg.from.id);
-
-      const bank_balance = parseInt(user.bank) * parseInt(item.price);
       const value = new Intl.NumberFormat('en-US').format(bank_balance);
-      const price = new Intl.NumberFormat('en-US').format(item.price);
 
       await bot.sendMessage(
         msg.chat.id,
@@ -30,7 +30,6 @@ async function bank(msg) {
         { reply_to_message_id: msg.message_id, parse_mode: 'HTML' }
       );
     } else if (msg.text.startsWith('/bank') || msg.text.startsWith('!bank')) {
-      const user = await selectUser(msg.from.id);
       const value = msg.text.split(' ')[1];
       const amount = parseInt(value.match(/\d+/));
 
