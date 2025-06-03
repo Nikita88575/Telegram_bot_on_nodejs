@@ -50,6 +50,6 @@ const teamBlacklist = sequelize.define('teams_blacklist', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-}); 
+});
 
-export { Team, teamBlacklist};
+export { Team, teamBlacklist };

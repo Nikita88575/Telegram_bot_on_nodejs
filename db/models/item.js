@@ -15,7 +15,7 @@ const Item = sequelize.define('item', {
   price: {
     type: DataTypes.FLOAT,
     allowNull: true,
-  }
+  },
 });
 
 export default Item;

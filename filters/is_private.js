@@ -1,5 +1,5 @@
 async function isPrivateChat(msg) {
-    return msg.chat.type === 'private';
+  return msg.chat.type === 'private';
 }
-  
-export default isPrivateChat;  
+
+export default isPrivateChat;
