@@ -4,7 +4,7 @@ import { selectItem } from '../db/item_commands.js';
 
 async function bank(msg) {
   try {
-    const item = await selectItem(2);
+    const item = await selectItem('Obligation');
 
     const user = await selectUser(msg.from.id);
     const bank_balance = parseInt(user.bank) * parseInt(item.price);
