@@ -1,33 +1,33 @@
-import BetHistory from './models/bet_history.js';
+import diceHistory from './models/dice_history.js';
 
 async function selectUser(user_id) {
   try {
-    const user = await BetHistory.findOne({ where: { user_id } });
+    const user = await diceHistory.findOne({ where: { user_id } });
     return user;
   } catch (error) {
     console.log(`[${Date()}] ${error}`);
   }
 }
 
-async function addBetRecord(
+async function addDiceRecord(
   user_id,
   dice_number,
   bet_amount,
   dice_result,
   dice_result_number,
   bet_multiplier,
-  dice_bet_amount,
+  dice_result_bet_amount,
   bet_date
 ) {
   try {
-    const bet_record = await BetHistory.create({
+    const bet_record = await diceHistory.create({
       user_id,
       dice_number,
       bet_amount,
       dice_result,
       dice_result_number,
       bet_multiplier,
-      dice_bet_amount,
+      dice_result_bet_amount,
       bet_date,
     });
     return bet_record;
@@ -36,9 +36,9 @@ async function addBetRecord(
   }
 }
 
-async function betCount(user_id) {
+async function diceCount(user_id) {
   try {
-    const bets_count = await BetHistory.findAll({
+    const bets_count = await diceHistory.findAll({
       where: { user_id: user_id },
     });
     return bets_count.length;
@@ -47,4 +47,4 @@ async function betCount(user_id) {
   }
 }
 
-export { selectUser, addBetRecord, betCount };
+export { selectUser, addDiceRecord, diceCount };

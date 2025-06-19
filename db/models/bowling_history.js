@@ -2,14 +2,10 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../../data/config.js';
 import User from './user.js';
 
-const BetHistory = sequelize.define('bet_history', {
+const bowlingHistory = sequelize.define('bowling_history', {
   user_id: {
     type: DataTypes.BIGINT,
     allowNull: false,
-  },
-  // Users choise
-  dice_number: {
-    type: DataTypes.BIGINT,
   },
   // Users bet
   bet_amount: {
@@ -17,11 +13,11 @@ const BetHistory = sequelize.define('bet_history', {
     defaultValue: 0.0,
   },
   // Dice result (win/lose)
-  dice_result: {
+  bowling_result: {
     type: DataTypes.STRING,
   },
   // Dice number
-  dice_result_number: {
+  bowling_result_number: {
     type: DataTypes.BIGINT,
   },
   // Bet result
@@ -29,7 +25,7 @@ const BetHistory = sequelize.define('bet_history', {
     type: DataTypes.FLOAT,
   },
   // Bet result
-  dice_bet_amount: {
+  bowling_result_bet_amount: {
     type: DataTypes.FLOAT,
   },
   // Bet date/time
@@ -39,10 +35,10 @@ const BetHistory = sequelize.define('bet_history', {
   },
 });
 
-BetHistory.belongsTo(User, {
+bowlingHistory.belongsTo(User, {
   foreignKey: 'user_id',
   targetKey: 'user_id',
   as: 'user',
 });
 
-export default BetHistory;
+export default bowlingHistory;

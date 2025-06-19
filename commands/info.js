@@ -5,7 +5,8 @@ import {
   formattedDate,
   countRefs,
 } from '../db/quick_commands.js';
-import { betCount } from '../db/history_bet_commands.js';
+import { diceCount } from '../db/history_dice_commands.js';
+import { bowlingCount } from '../db/history_bowling_commands.js';
 
 async function info(msg) {
   try {
@@ -18,18 +19,13 @@ async function info(msg) {
         bank,
         formattedDick,
         count_refs,
-        bets;
+        user_dice_count,
+        user_bowling_count;
 
       if (msg.reply_to_message) {
         await checkUser(msg, new Date());
         user = await selectUser(msg.reply_to_message.from.id);
         from_user = await selectUser(msg.from.id);
-        date = await formattedDate(user.createdAt);
-        formattedBalance = new Intl.NumberFormat('en-US').format(user.balance);
-        bank = new Intl.NumberFormat('en-US').format(user.bank);
-        formattedDick = new Intl.NumberFormat('en-US').format(user.dick_size);
-        count_refs = await countRefs(user.user_id);
-        bets = await betCount(user.user_id);
 
         if (
           (await user.status) == 'premium' &&
@@ -45,13 +41,15 @@ async function info(msg) {
       } else {
         await checkUser(msg, new Date());
         user = await selectUser(msg.from.id);
-        date = await formattedDate(user.createdAt);
-        formattedBalance = new Intl.NumberFormat('en-US').format(user.balance);
-        bank = new Intl.NumberFormat('en-US').format(user.bank);
-        formattedDick = new Intl.NumberFormat('en-US').format(user.dick_size);
-        count_refs = await countRefs(msg.from.id);
-        bets = await betCount(user.user_id);
       }
+
+      date = await formattedDate(user.createdAt);
+      formattedBalance = new Intl.NumberFormat('en-US').format(user.balance);
+      bank = new Intl.NumberFormat('en-US').format(user.bank);
+      formattedDick = new Intl.NumberFormat('en-US').format(user.dick_size);
+      count_refs = await countRefs(user.user_id);
+      user_dice_count = await diceCount(user.user_id);
+      user_bowling_count = await bowlingCount(user.user_id);
 
       await bot.sendMessage(
         msg.chat.id,
@@ -60,7 +58,8 @@ async function info(msg) {
           `👤 Username: ${user.username}\n` +
           `💵 Баланс: ${formattedBalance}\n` +
           `🏦 Банк: ${bank}\n` +
-          `🎲 Зіграно у кубик: ${bets}\n` +
+          `🎲 Зіграно у кубик: ${user_dice_count}\n` +
+          `🎳 Зіграно у боулінг: ${user_bowling_count}\n` +
           `📏 Довжина песюна: ${formattedDick} см.\n` +
           `😎 Статус: ${user.status}\n` +
           `👥 Запросив(ла): ${count_refs}\n` +

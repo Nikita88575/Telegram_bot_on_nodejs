@@ -11,6 +11,7 @@ import referral from './commands/invite.js';
 import help from './commands/help.js';
 import give_m from './commands/give_money.js';
 import bank from './commands/bank.js';
+import bowling from './commands/bowling.js';
 import isPrivateChat from './filters/is_private.js';
 import isGroup from './filters/Is_group.js';
 
@@ -59,6 +60,10 @@ bot.onText(/^\/bank(\s[+-]?\d+)?|!bank(\s[+-]?\d+)?$/i, async (msg) => {
   await bank(msg);
 });
 
+bot.onText(/\/bowling/, async (msg) => {
+  await bowling(msg);
+});
+
 (async () => {
   try {
     await sequelize.authenticate();
@@ -71,12 +76,13 @@ bot.onText(/^\/bank(\s[+-]?\d+)?|!bank(\s[+-]?\d+)?$/i, async (msg) => {
 
   await bot.setMyCommands([
     { command: '/start', description: 'Старт' },
-    { command: '/help', description: ' Допомога' },
+    { command: '/help', description: 'Допомога' },
     { command: '/info', description: 'Інформація про користувача' },
     { command: '/balance', description: 'Перевірка балансу' },
     { command: '/bonus', description: 'Бонус' },
     { command: '/dick', description: 'Гра "Песюн"' },
     { command: '/dice', description: 'Гра "Кубик"' },
+    { command: '/bowling', description: 'Гра "Боулінг"' },
     { command: '/referral', description: 'Реферальна система' },
   ]);
 

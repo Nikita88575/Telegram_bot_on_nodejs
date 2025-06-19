@@ -1,14 +1,11 @@
 import bot from '../app.js';
 import { selectUser, checkUser } from '../db/quick_commands.js';
-import { addBetRecord } from '../db/history_bet_commands.js';
+import { addDiceRecord } from '../db/history_dice_commands.js';
 
 async function dice(msg) {
   try {
     await checkUser(msg, new Date());
     const user = await selectUser(msg.from.id);
-
-    const now = new Date(user.last_time_bonus);
-    now.setHours(now.getHours());
 
     const chosenNumber = parseInt(msg.text.split(' ')[1]);
     const bet = parseFloat(msg.text.split(' ').slice(2).join(''));
@@ -31,6 +28,7 @@ async function dice(msg) {
 
     const message = await bot.sendDice(msg.chat.id);
     const diceValue = message.dice.value;
+    const now = new Date();
     await user.update({
       balance: (parseFloat(user.balance) - parseFloat(bet)).toFixed(2),
     });
@@ -43,7 +41,7 @@ async function dice(msg) {
           ).toFixed(2);
           await user.update({ balance: amount });
 
-          await addBetRecord(
+          await addDiceRecord(
             msg.from.id,
             chosenNumber,
             bet,
@@ -62,7 +60,7 @@ async function dice(msg) {
             { reply_to_message_id: msg.message_id }
           );
         } else {
-          await addBetRecord(
+          await addDiceRecord(
             msg.from.id,
             chosenNumber,
             bet,
