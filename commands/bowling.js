@@ -44,7 +44,7 @@ async function bowling(msg) {
 
     const bowlingDice = await bot.sendDice(msg.chat.id, { emoji: '🎳' });
     const diceValue = bowlingDice.dice.value;
-    const x =
+    let x =
       diceValue <= 2
         ? 0
         : diceValue === 3
@@ -56,6 +56,7 @@ async function bowling(msg) {
               : diceValue === 6
                 ? 2
                 : null;
+    x = user.status === 'premium' ? (diceValue >= 3 ? x + 0.2 : x) : x;
     const now = new Date();
     let bowlingResult, winDetails;
     await user.update({
@@ -73,7 +74,7 @@ async function bowling(msg) {
 
         if (diceValue === 6) {
           bowlingResult = `Strike 🎳❗️\n`;
-        } else if (diceValue == 3) {
+        } else if (diceValue == 3 && user.status != 'premium') {
           winDetails = `Повернення ставки 😢\n`;
         } else if (diceValue <= 2) {
           bowlingResult = `Майже... 😢\n`;
